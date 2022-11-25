@@ -1,0 +1,35 @@
+version: '2'
+services:
+    mysqldb: 
+      image: mysql:5.7
+      restart: always
+      environment:
+        MYSQL_DATABASE: mission
+        MYSQL_ROOT_PASSWORD: admin
+      ports:
+        - 3309:3309
+      networks:
+        - springboot-mysql
+      expose:
+        - '3306'
+      volumes:
+        - my-db:/var/lib/mysql
+    springbootwithmysqldocker:
+        container_name: springbootwithmysqldocker
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: springbootwithmysqldocker:latest
+        ports:
+            - 8080:8080
+        networks:
+          - springboot-mysql
+        depends_on:
+          - mysqldb
+
+volumes:
+  my-db: 
+networks:
+  springboot-mysql: 
+      
+     
